@@ -1,0 +1,15 @@
+# Ignora toda a pasta de saída do compilador ou build
+out/
+out*
+
+# Ignora arquivos de cache do Python (comum se usar scripts auxiliares)
+__pycache__/
+*.py[cod]
+
+# Ignora arquivos temporários e de log do Aider
+.aider*
+
+# Ignora variáveis de ambiente (Segurança: essencial para as chaves da Crepaldi/Nexus)
+.env
+.env.*
+!.env.example
