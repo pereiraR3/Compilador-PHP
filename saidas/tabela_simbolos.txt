@@ -1,0 +1,29 @@
+Tabela de Simbolos (escopo dois)
+- nome=$cont tipo=VARIAVEL escopo=dois endereco=3
+- nome=$j tipo=PARAMETRO escopo=dois endereco=0
+- nome=$k tipo=PARAMETRO escopo=dois endereco=1
+- nome=$l tipo=PARAMETRO escopo=dois endereco=2
+- nome=$quant tipo=VARIAVEL escopo=dois endereco=4
+
+Tabela de Simbolos (escopo global)
+- nome=$a tipo=VARIAVEL escopo=global endereco=0
+- nome=$b tipo=VARIAVEL escopo=global endereco=1
+- nome=$c tipo=VARIAVEL escopo=global endereco=2
+- nome=$d tipo=VARIAVEL escopo=global endereco=3
+- nome=$e tipo=VARIAVEL escopo=global endereco=4
+- nome=$f tipo=VARIAVEL escopo=global endereco=5
+- nome=$g tipo=VARIAVEL escopo=global endereco=6
+- nome=$h tipo=VARIAVEL escopo=global endereco=7
+- nome=dois tipo=FUNCAO escopo=global parametros=[$j, $k, $l] num_locais=5 endereco_inicio=-1
+- nome=um tipo=FUNCAO escopo=global parametros=[$a, $g, $d, $c] num_locais=8 endereco_inicio=-1
+
+Tabela de Simbolos (escopo um)
+- nome=$a tipo=PARAMETRO escopo=um endereco=0
+- nome=$c tipo=PARAMETRO escopo=um endereco=3
+- nome=$d tipo=PARAMETRO escopo=um endereco=2
+- nome=$g tipo=PARAMETRO escopo=um endereco=1
+- nome=$h tipo=VARIAVEL escopo=um endereco=4
+- nome=$i tipo=VARIAVEL escopo=um endereco=5
+- nome=$j tipo=VARIAVEL escopo=um endereco=6
+- nome=$l tipo=VARIAVEL escopo=um endereco=7
+

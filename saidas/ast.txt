@@ -1,0 +1,141 @@
+        Programa
+          Corpo
+            Declaracoes
+              DeclaracaoVariavel nome=$a
+                Inicializacao
+                  ExpressaoNumero valor=0.0
+              DeclaracaoVariavel nome=$b
+                Inicializacao
+                  ExpressaoNumero valor=0.0
+              DeclaracaoVariavel nome=$c
+                Inicializacao
+                  ExpressaoNumero valor=0.0
+              DeclaracaoVariavel nome=$d
+                Inicializacao
+                  ExpressaoNumero valor=0.0
+              DeclaracaoVariavel nome=$e
+                Inicializacao
+                  ExpressaoNumero valor=0.0
+              DeclaracaoVariavel nome=$f
+                Inicializacao
+                  ExpressaoNumero valor=0.0
+              DeclaracaoVariavel nome=$g
+                Inicializacao
+                  ExpressaoNumero valor=0.0
+              DeclaracaoVariavel nome=$h
+                Inicializacao
+                  ExpressaoNumero valor=0.0
+              DeclaracaoFuncao nome=um
+                Parametros
+                  $a
+                  $g
+                  $d
+                  $c
+                Corpo
+                  Declaracoes
+                    DeclaracaoVariavel nome=$h
+                      Inicializacao
+                        ExpressaoNumero valor=0.0
+                    DeclaracaoVariavel nome=$i
+                      Inicializacao
+                        ExpressaoNumero valor=0.0
+                    DeclaracaoVariavel nome=$j
+                      Inicializacao
+                        ExpressaoNumero valor=0.0
+                    DeclaracaoVariavel nome=$l
+                      Inicializacao
+                        ExpressaoNumero valor=0.0
+                  Comandos
+                    ComandoAtribuicao variavel=$h
+                      ExpressaoNumero valor=2.0
+                    ComandoAtribuicao variavel=$a
+                      ExpressaoBinaria op=+
+                        ExpressaoVariavel nome=$g
+                        ExpressaoBinaria op=/
+                          ExpressaoNumero valor=3.4
+                          ExpressaoVariavel nome=$h
+                    ComandoAtribuicao variavel=$l
+                      ExpressaoBinaria op=-
+                        ExpressaoVariavel nome=$c
+                        ExpressaoBinaria op=*
+                          ExpressaoVariavel nome=$d
+                          ExpressaoNumero valor=2.0
+                    ComandoIf
+                      Condicao
+                        Condicao
+                          ExpressaoBinaria op=>=
+                            ExpressaoBinaria op=+
+                              ExpressaoVariavel nome=$c
+                              ExpressaoVariavel nome=$d
+                            ExpressaoNumero valor=5.0
+                      BlocoIf
+                        ComandoEcho
+                          ExpressaoVariavel nome=$a
+                      BlocoElse
+                        ComandoEcho
+                          ExpressaoVariavel nome=$l
+              DeclaracaoFuncao nome=dois
+                Parametros
+                  $j
+                  $k
+                  $l
+                Corpo
+                  Declaracoes
+                    DeclaracaoVariavel nome=$cont
+                      Inicializacao
+                        ExpressaoNumero valor=0.0
+                    DeclaracaoVariavel nome=$quant
+                      Inicializacao
+                        ExpressaoNumero valor=0.0
+                  Comandos
+                    ComandoAtribuicao variavel=$quant
+                      ExpressaoLeitura
+                    ComandoAtribuicao variavel=$cont
+                      ExpressaoLeitura
+                    ComandoWhile
+                      Condicao
+                        Condicao
+                          ExpressaoBinaria op=<=
+                            ExpressaoVariavel nome=$cont
+                            ExpressaoVariavel nome=$quant
+                      Bloco
+                        ComandoEcho
+                          ExpressaoVariavel nome=$cont
+                        ComandoAtribuicao variavel=$cont
+                          ExpressaoBinaria op=+
+                            ExpressaoVariavel nome=$cont
+                            ExpressaoNumero valor=1.0
+                    ComandoAtribuicao variavel=$l
+                      ExpressaoBinaria op=+
+                        ExpressaoBinaria op=+
+                          ExpressaoVariavel nome=$l
+                          ExpressaoVariavel nome=$j
+                        ExpressaoVariavel nome=$cont
+                    ComandoEcho
+                      ExpressaoVariavel nome=$k
+                    ComandoEcho
+                      ExpressaoVariavel nome=$l
+            Comandos
+              ComandoEcho
+                ExpressaoVariavel nome=$e
+              ComandoAtribuicao variavel=$f
+                ExpressaoLeitura
+              ComandoAtribuicao variavel=$g
+                ExpressaoLeitura
+              ComandoAtribuicao variavel=$h
+                ExpressaoLeitura
+              ComandoAtribuicao variavel=$d
+                ExpressaoBinaria op=/
+                  ExpressaoVariavel nome=$e
+                  ExpressaoVariavel nome=$f
+              ComandoChamadaFuncao nome=dois
+                Argumentos
+                  ExpressaoVariavel nome=$h
+                  ExpressaoVariavel nome=$d
+                  ExpressaoVariavel nome=$h
+              ComandoChamadaFuncao nome=um
+                Argumentos
+                  ExpressaoVariavel nome=$f
+                  ExpressaoVariavel nome=$e
+                  ExpressaoVariavel nome=$g
+                  ExpressaoVariavel nome=$h
