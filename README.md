@@ -1,9 +1,9 @@
 # Compilador-PHP
 
-Compilador de uma linguagem similar a PHP, com etapas de analise lexico, sintatico, semantico, geracao de codigo objeto e execucao na Maquina Hipotetica (MaqHipo).
+Compilador da linguagem PHP, com etapas de analise lexico, sintatico, semantico, geracao de codigo objeto e execucao na Maquina Hipotetica.
 
 **Requisitos**
-- Java 17+ (JDK)
+- Java 17
 - `bash` para `run_interativo.sh`
 
 **Estrutura de Pastas**
