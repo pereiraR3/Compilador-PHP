@@ -8,9 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Executa a analise semantica e gera a tabela de simbolos
- */
 public class AnalisadorSemantico {
     
     private TabelaSimbolos tabelaGlobal;

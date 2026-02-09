@@ -9,9 +9,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * AnalisadorLexico lexico que converte codigo-fonte em uma sequencia de tokens
- */
 public class AnalisadorLexico {
 
     private static final String[][] PADROES = {

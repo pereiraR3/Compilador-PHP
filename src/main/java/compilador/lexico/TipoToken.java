@@ -1,8 +1,5 @@
 package compilador.lexico;
 
-/**
- * Tipos de tokens reconhecidos pelo analisador lexico
- */
 public enum TipoToken {
     PHP_ABRE,
     PHP_FECHA,

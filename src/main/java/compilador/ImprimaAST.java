@@ -4,38 +4,23 @@ import compilador.arvore_sintatica_abstrata.*;
 
 import java.util.List;
 
-/**
- * Imprime a arvore sintatica abstrata em formato textual
- */
 public class ImprimaAST {
     private final String indentacaoBase;
 
-    /**
-     * Cria o impressor com indentacao vazia
-     */
     public ImprimaAST() {
         this("");
     }
 
-    /**
-     * Cria o impressor com uma indentacao base
-     */
     public ImprimaAST(String indentacaoBase) {
         this.indentacaoBase = indentacaoBase == null ? "" : indentacaoBase;
     }
 
-    /**
-     * Gera a representacao textual da arvore a partir do programa
-     */
     public String imprimir(Programa programa) {
         StringBuilder sb = new StringBuilder();
         imprimirNo(programa, sb, 0);
         return sb.toString();
     }
 
-    /**
-     * Imprime recursivamente um no da arvore
-     */
     private void imprimirNo(NoArvoreSintaticaAbstrata no, StringBuilder sb, int nivel) {
         if (no == null) {
             linha(sb, nivel, "null");
@@ -164,9 +149,6 @@ public class ImprimaAST {
         linha(sb, nivel, "NoDesconhecido " + no.getClass().getSimpleName());
     }
 
-    /**
-     * Imprime uma lista de nos com um rotulo
-     */
     private void imprimirLista(String rotulo, List<? extends NoArvoreSintaticaAbstrata> lista, StringBuilder sb, int nivel) {
         if (lista == null || lista.isEmpty()) {
             linha(sb, nivel, rotulo + " (vazio)");
@@ -178,9 +160,6 @@ public class ImprimaAST {
         }
     }
 
-    /**
-     * Imprime uma lista de strings com um rotulo
-     */
     private void imprimirListaString(String rotulo, List<String> lista, StringBuilder sb, int nivel) {
         if (lista == null || lista.isEmpty()) {
             linha(sb, nivel, rotulo + " (vazio)");
@@ -192,9 +171,6 @@ public class ImprimaAST {
         }
     }
 
-    /**
-     * Adiciona uma linha com indentacao ao texto final
-     */
     private void linha(StringBuilder sb, int nivel, String texto) {
         sb.append(indentacaoBase);
         for (int i = 0; i < nivel; i++) {

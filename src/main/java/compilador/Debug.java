@@ -2,7 +2,7 @@ package compilador;
 
 public class Debug {
 
-    // Flag global - ativa todos os debugs
+    // Ativa todos os debugs
     public static boolean ENABLED = false;
 
     // Flags individuais por etapa
@@ -15,9 +15,6 @@ public class Debug {
     // Nivel de indentacao para prints hierarquicos
     private static int indentLevel = 0;
 
-    /**
-     * Ativa todos os debugs
-     */
     public static void ativarTodos() {
         ENABLED = true;
         LEXICO = true;
@@ -27,28 +24,18 @@ public class Debug {
         MAQUINA_HIPOTETICA = true;
     }
 
-
-    /**
-     * Imprime mensagem de debug para o AnalisadorLexico
-     */
     public static void lexico(String msg) {
         if (ENABLED && LEXICO) {
             System.out.println("[LEXICO] " + msg);
         }
     }
 
-    /**
-     * Imprime mensagem de debug para o AnalisadorSintatico
-     */
     public static void sintatico(String msg) {
         if (ENABLED && SINTATICO) {
             System.out.println("[SINTATICO] " + indent() + msg);
         }
     }
 
-    /**
-     * Imprime entrada em regra gramatical
-     */
     public static void entrarRegra(String regra) {
         if (ENABLED && SINTATICO) {
             System.out.println("[SINTATICO] " + indent() + "-> " + regra);
@@ -56,9 +43,6 @@ public class Debug {
         }
     }
 
-    /**
-     * Imprime saida de regra gramatical
-     */
     public static void sairRegra(String regra) {
         if (ENABLED && SINTATICO) {
             indentLevel--;
@@ -66,27 +50,18 @@ public class Debug {
         }
     }
 
-    /**
-     * Imprime mensagem de debug para o Analisador Semantico
-     */
     public static void semantico(String msg) {
         if (ENABLED && SEMANTICO) {
             System.out.println("[SEMANTICO] " + msg);
         }
     }
 
-    /**
-     * Imprime mensagem de debug para o Gerador de Codigo
-     */
     public static void gerador(String msg) {
         if (ENABLED && GERADOR) {
             System.out.println("[GERADOR] " + msg);
         }
     }
 
-    /**
-     * Imprime instrucao gerada
-     */
     public static void instrucao(int endereco, String mnemonico, String argumento) {
         if (ENABLED && GERADOR) {
             String arg = argumento != null ? " " + argumento : "";
@@ -94,18 +69,12 @@ public class Debug {
         }
     }
 
-    /**
-     * Imprime mensagem de debug para a Maquina Hipotetica
-     */
     public static void maquinaHipotetica(String msg) {
         if (ENABLED && MAQUINA_HIPOTETICA) {
             System.out.println("[MaqHipo] " + msg);
         }
     }
 
-    /**
-     * Imprime estado da Maquina Hipotetica (PC, pilha)
-     */
     public static void maquinaHipoteticaEstado(int pc, String mnemonico, Object arg, java.util.List<Double> pilha) {
         if (ENABLED && MAQUINA_HIPOTETICA) {
             String argStr = arg != null ? " " + arg : "";
@@ -113,9 +82,6 @@ public class Debug {
         }
     }
 
-    /**
-     * Formata a pilha para exibicao
-     */
     private static String formatarPilha(java.util.List<Double> pilha) {
         if (pilha == null || pilha.isEmpty()) {
             return "[]";
@@ -138,9 +104,6 @@ public class Debug {
         return sb.toString();
     }
 
-    /**
-     * Retorna string de indentacao
-     */
     private static String indent() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < indentLevel; i++) {

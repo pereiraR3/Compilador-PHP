@@ -3,9 +3,6 @@ package compilador.semantico;
 import java.util.HashMap;
 import java.util.Map;
 
-/*
- * Estrutura de dados para armazenar simbolos por escopo
- */
 public class TabelaSimbolos {
     
     private final Map<String, Simbolo> simbolos;
@@ -15,10 +12,9 @@ public class TabelaSimbolos {
 
     /**
      * Cria uma tabela de simbolos para um escopo
-     *
      * Existem 2 possibilidades de uso:
-     * 1) Escopo global: informe pai como null e use um nome como "global" para representar o escopo raiz
-     * 2) Escopo aninhado: informe um pai existente e um nomeEscopo para representar o novo nivel (ex.: "funcao", "bloco")
+     * - Escopo global: informe pai como null e use um nome como "global" para representar o escopo raiz
+     * - Escopo aninhado: informe um pai existente e um nomeEscopo para representar o novo nivel (ex: "funcao", "bloco")
      */
     public TabelaSimbolos(TabelaSimbolos pai, String nomeEscopo) {
         this.simbolos = new HashMap<>();

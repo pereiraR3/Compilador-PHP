@@ -2,7 +2,6 @@ package compilador;
 
 import compilador.arvore_sintatica_abstrata.Programa;
 import compilador.gerador.GeradorCodigo;
-import compilador.gerador.Instrucao;
 import compilador.lexico.ErroLexico;
 import compilador.lexico.AnalisadorLexico;
 import compilador.lexico.Token;

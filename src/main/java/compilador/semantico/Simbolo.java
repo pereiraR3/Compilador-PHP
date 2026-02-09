@@ -3,9 +3,6 @@ package compilador.semantico;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Representa um simbolo na tabela, com informacoes de tipo e escopo
- */
 public class Simbolo {
 
     public final String nome;

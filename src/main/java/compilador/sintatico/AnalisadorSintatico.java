@@ -37,7 +37,12 @@ public class AnalisadorSintatico {
         throw new ErroSintatico(mensagem, tokenAtual);
     }
 
-    /**
+    /**import compilador.Debug;
+import compilador.arvore_sintatica_abstrata.*;
+import compilador.lexico.ErroLexico;
+import compilador.lexico.AnalisadorLexico;
+import compilador.lexico.Token;
+import compilador.lexico.TipoToken;
      * Consome o token esperado e avanca o analisador lexico
      */
     private Token consumir(TipoToken tipoEsperado) throws ErroSintatico, ErroLexico {

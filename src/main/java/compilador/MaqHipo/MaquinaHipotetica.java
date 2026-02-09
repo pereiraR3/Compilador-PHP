@@ -12,9 +12,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Maquina hipotetica baseada em pilha que executa codigo objeto
- */
 public class MaquinaHipotetica {
     
     private final List<Double> pilha = new ArrayList<>();

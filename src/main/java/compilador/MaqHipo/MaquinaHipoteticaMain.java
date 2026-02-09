@@ -9,9 +9,6 @@ import java.util.List;
 
 public class MaquinaHipoteticaMain {
     
-    /**
-     * Executa a rotina main
-     */
     public static void main(String[] args) {
         String caminhoPadrao = Path.of("saidas", "codigo.objeto.txt").toString();
 
