@@ -233,20 +233,6 @@ public class AnalisadorLexico {
     }
 
     /**
-     * Olha o proximo token sem consumir
-     */
-    public Token olharProximoToken() throws ErroLexico {
-        int pos = posicao;
-        int linhaSalva = linha;
-        int colunaSalva = coluna;
-        Token token = proximoToken();
-        posicao = pos;
-        linha = linhaSalva;
-        coluna = colunaSalva;
-        return token;
-    }
-
-    /**
      * Tokeniza todo o codigo, incluindo o token EOF ao final
      */
     public List<Token> tokenizar() throws ErroLexico {

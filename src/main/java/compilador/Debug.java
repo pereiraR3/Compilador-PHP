@@ -27,17 +27,6 @@ public class Debug {
         MAQUINA_HIPOTETICA = true;
     }
 
-    /**
-     * Desativa todos os debugs
-     */
-    public static void desativarTodos() {
-        ENABLED = false;
-        LEXICO = false;
-        SINTATICO = false;
-        SEMANTICO = false;
-        GERADOR = false;
-        MAQUINA_HIPOTETICA = false;
-    }
 
     /**
      * Imprime mensagem de debug para o AnalisadorLexico
@@ -160,10 +149,4 @@ public class Debug {
         return sb.toString();
     }
 
-    /**
-     * Reseta indentacao
-     */
-    public static void resetIndent() {
-        indentLevel = 0;
-    }
 }

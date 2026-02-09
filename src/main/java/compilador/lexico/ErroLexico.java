@@ -19,24 +19,4 @@ public class ErroLexico extends Exception {
         this.coluna = coluna;
     }
 
-    /**
-     * Retorna a mensagem base do erro
-     */
-    public String getMensagem() {
-        return mensagem;
-    }
-
-    /**
-     * Retorna a linha onde o erro ocorreu
-     */
-    public int getLinha() {
-        return linha;
-    }
-
-    /**
-     * Retorna a coluna onde o erro ocorreu
-     */
-    public int getColuna() {
-        return coluna;
-    }
 }
