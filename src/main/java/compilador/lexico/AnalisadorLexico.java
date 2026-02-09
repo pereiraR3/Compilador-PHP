@@ -62,10 +62,6 @@ public class AnalisadorLexico {
     private int coluna;
     private final Pattern regexMestre;
     private final List<String> gruposOrdenados;
-
-    /**
-     * Cria um scanner para o codigo-fonte informado
-     */
     public AnalisadorLexico(String codigoFonte) {
         this.codigoFonte = codigoFonte;
         this.posicao = 0;
@@ -74,10 +70,6 @@ public class AnalisadorLexico {
         this.gruposOrdenados = new ArrayList<>();
         this.regexMestre = compilarRegex();
     }
-
-    /**
-     * Compila a regex master com grupos nomeados para cada token
-     */
     private Pattern compilarRegex() {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < PADROES.length; i++) {
@@ -93,10 +85,6 @@ public class AnalisadorLexico {
         }
         return Pattern.compile(builder.toString(), Pattern.DOTALL);
     }
-
-    /**
-     * Atualiza linha/coluna a partir de um trecho consumido
-     */
     private void atualizarPosicao(String texto) {
         for (int i = 0; i < texto.length(); i++) {
             char ch = texto.charAt(i);
@@ -108,10 +96,6 @@ public class AnalisadorLexico {
             }
         }
     }
-
-    /**
-     * Converte um tipo textual e valor para um Token do enum TipoToken
-     */
     private Token criarToken(String tipoStr, String valor, int linhaAtual, int colunaAtual) throws ErroLexico {
         if ("ESPACOEMBRANCO".equals(tipoStr) || "COMENTARIO".equals(tipoStr) || "COMENTARIOLINHA".equals(tipoStr)) {
             Debug.lexico("Ignorando: " + tipoStr + " na linha " + linhaAtual);
@@ -184,10 +168,6 @@ public class AnalisadorLexico {
                 throw new ErroLexico("Tipo de token desconhecido: " + tipoStr, linhaAtual, colunaAtual);
         }
     }
-
-    /**
-     * Retorna o proximo token da entrada (ou EOF)
-     */
     public Token proximoToken() throws ErroLexico {
         while (posicao < codigoFonte.length()) {
             Matcher casador = regexMestre.matcher(codigoFonte);
@@ -229,10 +209,7 @@ public class AnalisadorLexico {
         return new Token(TipoToken.EOF, null, linha, coluna);
     }
 
-    /**
-     * Tokeniza todo o codigo, incluindo o token EOF ao final
-     */
-    public List<Token> tokenizar() throws ErroLexico {
+        public List<Token> tokenizar() throws ErroLexico {
         List<Token> tokens = new ArrayList<>();
         while (true) {
             Token token = proximoToken();

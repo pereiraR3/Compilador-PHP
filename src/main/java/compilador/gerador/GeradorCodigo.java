@@ -38,10 +38,6 @@ public class GeradorCodigo {
         this.funcoesInfo = new HashMap<>();
         this.numVariaveisGlobais = 0;
     }
-
-    /**
-     * Gera o codigo objeto a partir da AST e retorna a lista de instrucoes
-     */
     public List<Instrucao> gerar(Programa ast) {
         Debug.gerador("=== Iniciando Geracao de Codigo ===");
         instrucoes.clear();
@@ -52,9 +48,6 @@ public class GeradorCodigo {
         return new ArrayList<>(instrucoes);
     }
 
-    /**
-     * Emite uma instrucao sem comentario
-     */
     private int emitir(String mnemonico, String argumento) {
         int endereco = instrucoes.size();
         instrucoes.add(new Instrucao(mnemonico, argumento, null));
@@ -62,41 +55,23 @@ public class GeradorCodigo {
         return endereco;
     }
 
-    /**
-     * Emite uma instrucao com comentario
-     */
     private int emitir(String mnemonico, String argumento, String comentario) {
         int endereco = instrucoes.size();
         instrucoes.add(new Instrucao(mnemonico, argumento, comentario));
         Debug.instrucao(endereco, mnemonico, argumento);
         return endereco;
     }
-
-    /**
-     * Retorna o endereco (indice) da proxima instrucao a emitir
-     */
     private int enderecoAtual() {
         return instrucoes.size();
     }
 
-    /**
-     * Corrige o argumento de um desvio para um novo endereco
-     */
     private void corrigirEndereco(int indice, int novoEndereco) {
         instrucoes.get(indice).argumento = String.valueOf(novoEndereco);
     }
-
-    /**
-     * Gera codigo para o programa principal
-     */
     private void gerarPrograma(Programa programa) {
         numVariaveisGlobais = contarVariaveis(programa.corpo);
         gerarCorpo(programa.corpo, true);
     }
-
-    /**
-     * Gera codigo para um corpo (global ou de funcao)
-     */
     private int gerarCorpo(Corpo corpo, boolean eGlobal) {
         int numVariaveis = 0;
 
@@ -154,19 +129,11 @@ public class GeradorCodigo {
 
         return numVariaveis;
     }
-
-    /**
-     * Gera inicializacao de variavel, quando houver expressao
-     */
     private void gerarDeclaracaoVariavel(DeclaracaoVariavel decl) {
         if (decl.expressaoInicial != null && !ehZeroLiteral(decl.expressaoInicial)) {
             emitirAtribuicao(decl.nome, decl.expressaoInicial);
         }
     }
-
-    /**
-     * Gera o corpo da funcao e retorna o indice do DSVI para patch posterior
-     */
     private int gerarDeclaracaoFuncaoComDesvio(DeclaracaoFuncao decl) {
         Debug.gerador("--- Gerando funcao: " + decl.nome + " ---");
         int indiceDesvio = emitir("DSVI", "0", "#funcao " + decl.nome);
@@ -210,10 +177,6 @@ public class GeradorCodigo {
         // Retorna o índice do DSVI para correção posterior
         return indiceDesvio;
     }
-
-    /**
-     * Gera codigo para um comando da linguagem
-     */
     private void gerarComando(Comando cmd) {
         if (cmd instanceof ComandoEcho) {
             gerarComandoEcho((ComandoEcho) cmd);
@@ -227,18 +190,10 @@ public class GeradorCodigo {
             gerarComandoChamadaFuncao((ComandoChamadaFuncao) cmd);
         }
     }
-
-    /**
-     * Gera codigo para o comando echo
-     */
     private void gerarComandoEcho(ComandoEcho cmd) {
         gerarExpressao(cmd.expressao);
         emitir("IMPR", null);
     }
-
-    /**
-     * Gera codigo para o comando if/else
-     */
     private void gerarComandoIf(ComandoIf cmd) {
         gerarCondicao(cmd.condicao);
         int indiceDsvf = emitir("DSVF", "0");
@@ -260,10 +215,6 @@ public class GeradorCodigo {
             corrigirEndereco(indiceDsvf, enderecoAtual());
         }
     }
-
-    /**
-     * Gera codigo para o comando while
-     */
     private void gerarComandoWhile(ComandoWhile cmd) {
         int enderecoInicio = enderecoAtual();
 
@@ -277,17 +228,10 @@ public class GeradorCodigo {
         emitir("DSVI", String.valueOf(enderecoInicio));
         corrigirEndereco(indiceDsvf, enderecoAtual());
     }
-
-    /**
-     * Gera codigo para atribuicao
-     */
     private void gerarComandoAtribuicao(ComandoAtribuicao cmd) {
         emitirAtribuicao(cmd.variavel, cmd.expressao);
     }
 
-    /**
-     * Emite o codigo de atribuicao para uma variavel
-     */
     private void emitirAtribuicao(String nomeVariavel, Expressao expressao) {
         if (expressao instanceof ExpressaoLeitura) {
             emitir("LEIT", null, "#" + nomeVariavel);
@@ -297,10 +241,6 @@ public class GeradorCodigo {
         int endereco = obterEnderecoVariavel(nomeVariavel);
         emitir("ARMZ", String.valueOf(endereco));
     }
-
-    /**
-     * Gera codigo para chamada de funcao em comando
-     */
     private void gerarComandoChamadaFuncao(ComandoChamadaFuncao cmd) {
         Debug.gerador("Gerando chamada de funcao: " + cmd.nomeFuncao);
         Simbolo simbolo = tabelaGlobal.buscar(cmd.nomeFuncao);
@@ -338,17 +278,9 @@ public class GeradorCodigo {
         Debug.gerador("  Endereco de retorno: " + endRetorno);
         corrigirEndereco(indicePusher, endRetorno);
     }
-
-    /**
-     * Gera codigo para uma condicao (expressao booleana)
-     */
     private void gerarCondicao(Condicao cond) {
         gerarExpressao(cond.expressao);
     }
-
-    /**
-     * Gera codigo para uma expressao
-     */
     private void gerarExpressao(Expressao expr) {
         if (expr instanceof ExpressaoLeitura) {
             emitir("LEIT", null);
@@ -365,10 +297,6 @@ public class GeradorCodigo {
             gerarExpressaoChamadaFuncao((ExpressaoChamadaFuncao) expr);
         }
     }
-
-    /**
-     * Gera codigo para chamada de funcao usada como expressao
-     */
     private void gerarExpressaoChamadaFuncao(ExpressaoChamadaFuncao expr) {
         Simbolo simbolo = tabelaGlobal.buscar(expr.nomeFuncao);
         if (simbolo == null) {
@@ -400,10 +328,6 @@ public class GeradorCodigo {
 
         corrigirEndereco(indicePusher, enderecoAtual());
     }
-
-    /**
-     * Gera codigo para uma expressao binaria
-     */
     private void gerarExpressaoBinaria(ExpressaoBinaria expr) {
         gerarExpressao(expr.esquerda);
         gerarExpressao(expr.direita);
@@ -449,10 +373,6 @@ public class GeradorCodigo {
                 break;
         }
     }
-
-    /**
-     * Gera codigo para uma expressao unaria
-     */
     private void gerarExpressaoUnaria(ExpressaoUnaria expr) {
         if ("-".equals(expr.operador)) {
             gerarExpressao(expr.operando);
@@ -464,10 +384,6 @@ public class GeradorCodigo {
             gerarExpressao(expr.operando);
         }
     }
-
-    /**
-     * Resolve o endereco de uma variavel no escopo atual
-     */
     private int obterEnderecoVariavel(String nome) {
         Simbolo simbolo = tabelaAtual.buscar(nome);
         if (simbolo != null) {
@@ -479,9 +395,6 @@ public class GeradorCodigo {
         throw new IllegalStateException("Variavel nao encontrada na tabela de simbolos: " + nome);
     }
 
-    /**
-     * Conta variaveis declaradas em um corpo
-     */
     private int contarVariaveis(Corpo corpo) {
         int total = 0;
         for (Declaracao decl : corpo.declaracoes) {
@@ -491,10 +404,6 @@ public class GeradorCodigo {
         }
         return total;
     }
-
-    /**
-     * Verifica se a expressao e o literal zero
-     */
     private boolean ehZeroLiteral(Expressao expr) {
         if (expr instanceof ExpressaoNumero) {
             double valor = ((ExpressaoNumero) expr).valor;
@@ -502,27 +411,16 @@ public class GeradorCodigo {
         }
         return false;
     }
-
-    /**
-     * Formata numero para o codigo objeto (remove .0 quando inteiro)
-     */
     private String formatarNumero(double valor) {
         if (Math.rint(valor) == valor) {
             return String.valueOf((long) valor);
         }
         return String.valueOf(valor);
     }
-
-    /**
-     * Lanca erro quando argumentos nao sao variaveis simples
-     */
     private void erroArgumentoNaoVariavel(String nomeFuncao) {
         throw new IllegalStateException("Chamada de funcao '" + nomeFuncao + "' requer argumentos simples (variaveis) no modo Aula13");
     }
 
-    /**
-     * Exporta o codigo objeto para um arquivo
-     */
     public void exportar(String caminho) throws IOException {
         Path path = Path.of(caminho);
         List<String> linhas = new ArrayList<>();

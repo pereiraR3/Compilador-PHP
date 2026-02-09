@@ -13,12 +13,6 @@ public class Simbolo {
     public int enderecoInicio;
     public String escopo;
 
-    /**
-     * Cria um simbolo para uma das tres possibilidades:
-     * 1. Variavel: informe endereco e escopo, parametros = null
-     * 2. Parametro: informe endereco e escopo (nome da funcao), parametros = null
-     * 3. Funcao: informe parametros e escopo, endereco = -1
-     */
     public Simbolo(String nome, TipoSimbolo tipo, int endereco, List<String> parametros, String escopo) {
         this.nome = nome;
         this.tipo = tipo;

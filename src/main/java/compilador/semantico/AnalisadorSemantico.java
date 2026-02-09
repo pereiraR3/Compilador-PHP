@@ -22,9 +22,6 @@ public class AnalisadorSemantico {
         this.tabelasPorEscopo = new HashMap<>();
     }
 
-    /**
-     * Analisa o programa e retorna a tabela de simbolos global
-     */
     public TabelaSimbolos analisar(Programa ast) throws ErroSemantico {
         Debug.semantico("=== Iniciando Analise Semantica ===");
         tabelaGlobal = new TabelaSimbolos(null, "global");
@@ -43,31 +40,17 @@ public class AnalisadorSemantico {
         Debug.semantico("=== Analise Semantica Concluida ===");
         return tabelaGlobal;
     }
-
-    /**
-     * Retorna uma copia das tabelas de simbolos por escopo
-     */
     public Map<String, TabelaSimbolos> getTabelasPorEscopo() {
         return new HashMap<>(tabelasPorEscopo);
     }
-
-    /**
-     * Registra uma mensagem de erro semantico
-     */
     private void erro(String mensagem) {
         erros.add(mensagem);
     }
 
-    /**
-     * Analisa a estrutura principal do programa
-     */
     private void analisarPrograma(Programa programa) {
         analisarCorpo(programa.corpo);
     }
 
-    /**
-     * Analisa declaracoes e comandos de um corpo
-     */
     private void analisarCorpo(Corpo corpo) {
         for (Declaracao decl : corpo.declaracoes) {
             analisarDeclaracao(decl);
@@ -78,9 +61,6 @@ public class AnalisadorSemantico {
         }
     }
 
-    /**
-     * Encaminha a analise de uma declaracao
-     */
     private void analisarDeclaracao(Declaracao decl) {
         if (decl instanceof DeclaracaoVariavel) {
             analisarDeclaracaoVariavel((DeclaracaoVariavel) decl);
@@ -89,9 +69,6 @@ public class AnalisadorSemantico {
         }
     }
 
-    /**
-     * Analisa uma declaracao de variavel, incluindo inicializacao se existir
-     */
     private void analisarDeclaracaoVariavel(DeclaracaoVariavel decl) {
         String nome = decl.nome;
         Debug.semantico("Analisando declaracao de variavel: " + nome + " (escopo: " + tabelaAtual.nomeEscopo + ")");
@@ -120,9 +97,6 @@ public class AnalisadorSemantico {
         }
     }
 
-    /**
-     * Analisa uma declaracao de funcao e o seu corpo
-     */
     private void analisarDeclaracaoFuncao(DeclaracaoFuncao decl) {
         String nome = decl.nome;
         Debug.semantico("Analisando declaracao de funcao: " + nome);
@@ -169,9 +143,6 @@ public class AnalisadorSemantico {
         tabelaAtual = tabelaAnterior;
     }
 
-    /**
-     * Encaminha a analise de um comando
-     */
     private void analisarComando(Comando cmd) {
         if (cmd instanceof ComandoEcho) {
             analisarComandoEcho((ComandoEcho) cmd);
@@ -186,16 +157,10 @@ public class AnalisadorSemantico {
         }
     }
 
-    /**
-     * Analisa um comando de escrita
-     */
     private void analisarComandoEcho(ComandoEcho cmd) {
         analisarExpressao(cmd.expressao);
     }
 
-    /**
-     * Analisa um comando condicional
-     */
     private void analisarComandoIf(ComandoIf cmd) {
         analisarCondicao(cmd.condicao);
         for (Comando c : cmd.blocoIf) {
@@ -208,9 +173,6 @@ public class AnalisadorSemantico {
         }
     }
 
-    /**
-     * Analisa um comando de repeticao
-     */
     private void analisarComandoWhile(ComandoWhile cmd) {
         analisarCondicao(cmd.condicao);
         for (Comando c : cmd.bloco) {
@@ -218,31 +180,19 @@ public class AnalisadorSemantico {
         }
     }
 
-    /**
-     * Analisa um comando de atribuicao
-     */
     private void analisarComandoAtribuicao(ComandoAtribuicao cmd) {
         verificarVariavelDeclarada(cmd.variavel);
         analisarExpressao(cmd.expressao);
     }
 
-    /**
-     * Analisa um comando de chamada de funcao
-     */
     private void analisarComandoChamadaFuncao(ComandoChamadaFuncao cmd) {
         validarChamadaFuncao(cmd.nomeFuncao, cmd.argumentos);
     }
 
-    /**
-     * Analisa uma condicao
-     */
     private void analisarCondicao(Condicao cond) {
         analisarExpressao(cond.expressao);
     }
 
-    /**
-     * Analisa uma expressao e suas subexpressoes
-     */
     private void analisarExpressao(Expressao expr) {
         if (expr instanceof ExpressaoLeitura) {
             return;
@@ -263,16 +213,10 @@ public class AnalisadorSemantico {
         }
     }
 
-    /**
-     * Analisa uma expressao de chamada de funcao
-     */
     private void analisarExpressaoChamadaFuncao(ExpressaoChamadaFuncao expr) {
         validarChamadaFuncao(expr.nomeFuncao, expr.argumentos);
     }
 
-    /**
-     * Valida a existencia da funcao, sua assinatura e os argumentos
-     */
     private void validarChamadaFuncao(String nomeFuncao, List<Expressao> argumentos) {
         Simbolo simbolo = tabelaGlobal.buscar(nomeFuncao);
 
@@ -297,10 +241,6 @@ public class AnalisadorSemantico {
             analisarExpressao(arg);
         }
     }
-
-    /**
-     * Verifica se a variavel foi declarada no escopo atual ou em escopos pais
-     */
     private Simbolo verificarVariavelDeclarada(String nome) {
         Simbolo simbolo = tabelaAtual.buscar(nome);
 
@@ -316,10 +256,6 @@ public class AnalisadorSemantico {
 
         return simbolo;
     }
-
-    /**
-     * Retorna o endereco de uma variavel ou parametro, se existir
-     */
     public int obterEnderecoVariavel(String nome) {
         Simbolo simbolo = tabelaAtual.buscar(nome);
         if (simbolo != null && (simbolo.tipo == TipoSimbolo.VARIAVEL || simbolo.tipo == TipoSimbolo.PARAMETRO)) {
@@ -327,10 +263,6 @@ public class AnalisadorSemantico {
         }
         return -1;
     }
-
-    /**
-     * Retorna o simbolo de uma funcao, se existir
-     */
     public Simbolo obterInfoFuncao(String nome) {
         Simbolo simbolo = tabelaGlobal.buscar(nome);
         if (simbolo != null && simbolo.tipo == TipoSimbolo.FUNCAO) {

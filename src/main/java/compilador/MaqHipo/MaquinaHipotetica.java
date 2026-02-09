@@ -20,10 +20,6 @@ public class MaquinaHipotetica {
     private final List<Integer> pilhaRetorno = new ArrayList<>();
     private boolean executando = false;
     private final BufferedReader leitor = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
-
-    /**
-     * Converte uma linha de texto em uma instrucao
-     */
     private Instrucao lerLinhaInstrucao(String linha) {
         String limpa = linha.trim();
         if (limpa.isEmpty()) {
@@ -52,9 +48,6 @@ public class MaquinaHipotetica {
         return new Instrucao(mnemonico, argumento, comentario);
     }
 
-    /**
-     * Carrega instrucoes a partir de um arquivo de codigo objeto
-     */
     public void carregarArquivo(String caminho) throws IOException {
         instrucoes.clear();
         List<String> linhas = Files.readAllLines(Path.of(caminho), StandardCharsets.UTF_8);
@@ -66,9 +59,6 @@ public class MaquinaHipotetica {
         }
     }
 
-    /**
-     * Carrega instrucoes a partir de um texto contendo o codigo objeto
-     */
     public void carregarInstrucoes(String texto) {
         instrucoes.clear();
         String[] linhas = texto.trim().split("\n");
@@ -80,9 +70,6 @@ public class MaquinaHipotetica {
         }
     }
 
-    /**
-     * Executa o programa carregado na memoria da MaqHipo
-     */
     public void executar() throws ErrosMaquinaHipotetica, IOException {
         Debug.maquinaHipotetica("=== Iniciando Execucao da Maquina Hipotetica ===");
         Debug.maquinaHipotetica("Total de instrucoes: " + instrucoes.size());
@@ -98,10 +85,6 @@ public class MaquinaHipotetica {
         }
         Debug.maquinaHipotetica("=== Execucao da Maquina Hipotetica Concluida ===");
     }
-
-    /**
-     * Resolve enderecos negativos (parametros) para endereco positivo
-     */
     private int resolverEndereco(Double valor) {
         int end = valor != null ? valor.intValue() : 0;
         if (end < 0) {
@@ -110,23 +93,14 @@ public class MaquinaHipotetica {
         return end;
     }
 
-    /**
-     * Instrucao INPP: inicializa a execucao
-     */
     private void execInpp() {
         contadorPrograma += 1;
     }
 
-    /**
-     * Instrucao PARA: encerra a execucao
-     */
     private void execPara() {
         executando = false;
     }
 
-    /**
-     * Instrucao ALME: reserva espaco na pilha
-     */
     private void execAlme(Double arg) {
         int n = arg != null ? arg.intValue() : 0;
         for (int i = 0; i < n; i++) {
@@ -135,9 +109,6 @@ public class MaquinaHipotetica {
         contadorPrograma += 1;
     }
 
-    /**
-     * Instrucao DESM: desaloca espaco da pilha
-     */
     private void execDesm(Double arg) {
         int n = arg != null ? arg.intValue() : 0;
         for (int i = 0; i < n; i++) {
@@ -148,9 +119,6 @@ public class MaquinaHipotetica {
         contadorPrograma += 1;
     }
 
-    /**
-     * Instrucao ARMZ: armazena valor no endereco indicado
-     */
     private void execArmz(Double arg) {
         int end = resolverEndereco(arg);
         double valor = pilha.isEmpty() ? 0.0 : pilha.remove(pilha.size() - 1);
@@ -161,9 +129,6 @@ public class MaquinaHipotetica {
         contadorPrograma += 1;
     }
 
-    /**
-     * Instrucao CRVL: carrega valor do endereco indicado
-     */
     private void execCrvl(Double arg) {
         int end = resolverEndereco(arg);
         double valor = end < pilha.size() ? pilha.get(end) : 0.0;
@@ -171,18 +136,12 @@ public class MaquinaHipotetica {
         contadorPrograma += 1;
     }
 
-    /**
-     * Instrucao CRCT: carrega constante
-     */
     private void execCrct(Double arg) {
         double valor = arg != null ? arg : 0.0;
         pilha.add(valor);
         contadorPrograma += 1;
     }
 
-    /**
-     * Instrucao SOMA: soma os dois valores do topo da pilha
-     */
     private void execSoma() {
         double op2 = pilha.isEmpty() ? 0.0 : pilha.remove(pilha.size() - 1);
         double op1 = pilha.isEmpty() ? 0.0 : pilha.remove(pilha.size() - 1);
@@ -190,9 +149,6 @@ public class MaquinaHipotetica {
         contadorPrograma += 1;
     }
 
-    /**
-     * Instrucao SUBT: subtrai os dois valores do topo da pilha
-     */
     private void execSubt() {
         double op2 = pilha.isEmpty() ? 0.0 : pilha.remove(pilha.size() - 1);
         double op1 = pilha.isEmpty() ? 0.0 : pilha.remove(pilha.size() - 1);
@@ -200,9 +156,6 @@ public class MaquinaHipotetica {
         contadorPrograma += 1;
     }
 
-    /**
-     * Instrucao MULT: multiplica os dois valores do topo da pilha
-     */
     private void execMult() {
         double op2 = pilha.isEmpty() ? 0.0 : pilha.remove(pilha.size() - 1);
         double op1 = pilha.isEmpty() ? 0.0 : pilha.remove(pilha.size() - 1);
@@ -210,9 +163,6 @@ public class MaquinaHipotetica {
         contadorPrograma += 1;
     }
 
-    /**
-     * Instrucao DIVI: divide os dois valores do topo da pilha
-     */
     private void execDivi() throws ErrosMaquinaHipotetica {
         double op2 = pilha.isEmpty() ? 0.0 : pilha.remove(pilha.size() - 1);
         double op1 = pilha.isEmpty() ? 0.0 : pilha.remove(pilha.size() - 1);
@@ -223,16 +173,10 @@ public class MaquinaHipotetica {
         contadorPrograma += 1;
     }
 
-    /**
-     * Instrucao DSVI: desvio incondicional
-     */
     private void execDsvi(Double arg) {
         contadorPrograma = arg != null ? arg.intValue() : 0;
     }
 
-    /**
-     * Instrucao DSVF: desvio se falso
-     */
     private void execDsvf(Double arg) {
         double valor = pilha.isEmpty() ? 0.0 : pilha.remove(pilha.size() - 1);
         if (valor == 0) {
@@ -242,9 +186,6 @@ public class MaquinaHipotetica {
         }
     }
 
-    /**
-     * Instrucao LEIT: le um valor do usuario e empilha
-     */
     private void execLeit(String comentario) throws IOException {
         String alvo = comentario;
         if (alvo != null && !alvo.isBlank()) {
@@ -267,9 +208,6 @@ public class MaquinaHipotetica {
         contadorPrograma += 1;
     }
 
-    /**
-     * Instrucao IMPR: imprime o valor no topo da pilha
-     */
     private void execImpr() {
         double valor = pilha.isEmpty() ? 0.0 : pilha.remove(pilha.size() - 1);
         String saida;
@@ -282,18 +220,12 @@ public class MaquinaHipotetica {
         contadorPrograma += 1;
     }
 
-    /**
-     * Instrucao INVE: inverte o sinal do valor no topo da pilha
-     */
     private void execInve() {
         double valor = pilha.isEmpty() ? 0.0 : pilha.remove(pilha.size() - 1);
         pilha.add(-valor);
         contadorPrograma += 1;
     }
 
-    /**
-     * Instrucao CONJ: conjuncao logica (AND)
-     */
     private void execConj() {
         double op2 = pilha.isEmpty() ? 0.0 : pilha.remove(pilha.size() - 1);
         double op1 = pilha.isEmpty() ? 0.0 : pilha.remove(pilha.size() - 1);
@@ -301,9 +233,6 @@ public class MaquinaHipotetica {
         contadorPrograma += 1;
     }
 
-    /**
-     * Instrucao DISJ: disjuncao logica (OR)
-     */
     private void execDisj() {
         double op2 = pilha.isEmpty() ? 0.0 : pilha.remove(pilha.size() - 1);
         double op1 = pilha.isEmpty() ? 0.0 : pilha.remove(pilha.size() - 1);
@@ -311,18 +240,12 @@ public class MaquinaHipotetica {
         contadorPrograma += 1;
     }
 
-    /**
-     * Instrucao NEGA: negacao logica
-     */
     private void execNega() {
         double valor = pilha.isEmpty() ? 0.0 : pilha.remove(pilha.size() - 1);
         pilha.add(1.0 - valor);
         contadorPrograma += 1;
     }
 
-    /**
-     * Decodifica e executa uma instrucao da MaqHipo
-     */
     private void executarInstrucao(Instrucao instrucao) throws ErrosMaquinaHipotetica, IOException {
         String mnem = instrucao.mnemonico;
         Double arg = instrucao.argumento;
@@ -477,10 +400,6 @@ public class MaquinaHipotetica {
                 throw new ErrosMaquinaHipotetica("Instrucao desconhecida: " + mnem);
         }
     }
-
-    /**
-     * Retorna uma string com o estado atual da execucao
-     */
     public String debugEstado() {
         return "PC: " + contadorPrograma + ", Pilha: " + pilha;
     }
@@ -488,18 +407,10 @@ public class MaquinaHipotetica {
 
 class ErrosMaquinaHipotetica extends Exception {
     private final String mensagem;
-
-    /**
-     * Cria um erro de execucao da maquina hipotetica
-     */
     public ErrosMaquinaHipotetica(String mensagem) {
         super("Erro Maquina Hipotetica: " + mensagem);
         this.mensagem = mensagem;
     }
-
-    /**
-     * Retorna a mensagem base do erro
-     */
     public String getMensagem() {
         return mensagem;
     }

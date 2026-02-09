@@ -11,10 +11,6 @@ public class Instrucao {
         this.argumento = argumento;
         this.comentario = comentario;
     }
-
-    /**
-     * Retorna a representacao textual da instrucao
-     */
     @Override
     public String toString() {
         if (argumento != null) {

@@ -29,22 +29,10 @@ public class AnalisadorSintatico {
         this.analisadorLexico = analisadorLexico;
         this.tokenAtual = this.analisadorLexico.proximoToken();
     }
-
-    /**
-     * Lanca um erro sintatico com a mensagem informada
-     */
     private void erro(String mensagem) throws ErroSintatico {
         throw new ErroSintatico(mensagem, tokenAtual);
     }
 
-    /**import compilador.Debug;
-import compilador.arvore_sintatica_abstrata.*;
-import compilador.lexico.ErroLexico;
-import compilador.lexico.AnalisadorLexico;
-import compilador.lexico.Token;
-import compilador.lexico.TipoToken;
-     * Consome o token esperado e avanca o analisador lexico
-     */
     private Token consumir(TipoToken tipoEsperado) throws ErroSintatico, ErroLexico {
         if (tokenAtual.getTipo() == tipoEsperado) {
             Token tokenConsumido = tokenAtual;
@@ -55,17 +43,9 @@ import compilador.lexico.TipoToken;
         erro("Esperado " + tipoEsperado.name());
         return null;
     }
-
-    /**
-     * Verifica se o token atual e do tipo informado
-     */
     private boolean verificar(TipoToken tipo) {
         return tokenAtual.getTipo() == tipo;
     }
-
-    /**
-     * Verifica se o token atual e um dos tipos informados
-     */
     private boolean verificarVarios(TipoToken... tipos) {
         TipoToken atual = tokenAtual.getTipo();
         for (TipoToken tipo : tipos) {
@@ -76,16 +56,10 @@ import compilador.lexico.TipoToken;
         return false;
     }
 
-    /**
-     * Analisa o programa completo
-     */
     public Programa analisar() throws ErroSintatico, ErroLexico {
         return analisarPrograma();
     }
 
-    /**
-     * Analisa o programa principal e garante o fim do arquivo
-     */
     private Programa analisarPrograma() throws ErroSintatico, ErroLexico {
         Debug.entrarRegra("<programa>");
         consumir(TipoToken.PHP_ABRE);
@@ -100,9 +74,6 @@ import compilador.lexico.TipoToken;
         return new Programa(corpo);
     }
 
-    /**
-     * Analisa um corpo de programa com declaracoes e comandos
-     */
     private Corpo analisarCorpo() throws ErroSintatico, ErroLexico {
         Debug.entrarRegra("<corpo>");
         Corpo corpo = analisarCorpoComDeclaracoes(true);
@@ -110,9 +81,6 @@ import compilador.lexico.TipoToken;
         return corpo;
     }
 
-    /**
-     * Analisa um corpo, controlando se permite declaracoes de funcoes
-     */
     private Corpo analisarCorpoComDeclaracoes(boolean permiteFuncoes) throws ErroSintatico, ErroLexico {
         List<Declaracao> declaracoes = new ArrayList<>();
         List<Comando> comandos = new ArrayList<>();
@@ -141,9 +109,6 @@ import compilador.lexico.TipoToken;
         return new Corpo(declaracoes, comandos);
     }
 
-    /**
-     * Analisa uma declaracao de variavel
-     */
     private DeclaracaoVariavel analisarDcV() throws ErroSintatico, ErroLexico {
         Debug.entrarRegra("<dc_v>");
         Token tokenVariavel = consumir(TipoToken.VARIAVEL);
@@ -154,9 +119,6 @@ import compilador.lexico.TipoToken;
         return new DeclaracaoVariavel(nome, expressaoInicial);
     }
 
-    /**
-     * Analisa uma atribuicao opcional de variavel
-     */
     private Expressao analisarAtribuicaoOpcional() throws ErroSintatico, ErroLexico {
         if (verificar(TipoToken.ATRIBUICAO)) {
             consumir(TipoToken.ATRIBUICAO);
@@ -168,9 +130,6 @@ import compilador.lexico.TipoToken;
         return null;
     }
 
-    /**
-     * Analisa uma declaracao de funcao
-     */
     private DeclaracaoFuncao analisarDcF() throws ErroSintatico, ErroLexico {
         Debug.entrarRegra("<dc_f>");
         consumir(TipoToken.FUNCTION);
@@ -186,9 +145,6 @@ import compilador.lexico.TipoToken;
         return new DeclaracaoFuncao(nome, parametros, corpo);
     }
 
-    /**
-     * Analisa a lista de parametros de uma funcao
-     */
     private List<String> analisarParametros() throws ErroSintatico, ErroLexico {
         consumir(TipoToken.ABRE_PAREN);
         List<String> parametros = new ArrayList<>();
@@ -201,9 +157,6 @@ import compilador.lexico.TipoToken;
         return parametros;
     }
 
-    /**
-     * Analisa uma lista de parametros separada por virgula
-     */
     private List<String> analisarListaPar() throws ErroSintatico, ErroLexico {
         List<String> parametros = new ArrayList<>();
         Token tokenParametro = consumir(TipoToken.VARIAVEL);
@@ -218,16 +171,10 @@ import compilador.lexico.TipoToken;
         return parametros;
     }
 
-    /**
-     * Analisa o corpo de uma funcao
-     */
     private Corpo analisarCorpoF() throws ErroSintatico, ErroLexico {
         return analisarCorpoComDeclaracoes(false);
     }
 
-    /**
-     * Analisa uma lista de comandos
-     */
     private List<Comando> analisarComandos() throws ErroSintatico, ErroLexico {
         List<Comando> comandos = new ArrayList<>();
         while (verificarVarios(TIPOS_COMANDO)) {
@@ -237,9 +184,6 @@ import compilador.lexico.TipoToken;
         return comandos;
     }
 
-    /**
-     * Analisa um comando individual
-     */
     private Comando analisarComando() throws ErroSintatico, ErroLexico {
         Debug.entrarRegra("<comando>");
         Comando cmd = null;
@@ -260,9 +204,6 @@ import compilador.lexico.TipoToken;
         return cmd;
     }
 
-    /**
-     * Analisa um comando de escrita
-     */
     private ComandoEcho analisarComandoEcho() throws ErroSintatico, ErroLexico {
         consumir(TipoToken.ECHO);
         Expressao expressao = analisarExpressao();
@@ -272,9 +213,6 @@ import compilador.lexico.TipoToken;
         return new ComandoEcho(expressao);
     }
 
-    /**
-     * Analisa um comando condicional
-     */
     private ComandoIf analisarComandoIf() throws ErroSintatico, ErroLexico {
         consumir(TipoToken.IF);
         consumir(TipoToken.ABRE_PAREN);
@@ -287,9 +225,6 @@ import compilador.lexico.TipoToken;
         return new ComandoIf(condicao, blocoIf, blocoElse);
     }
 
-    /**
-     * Analisa o bloco do else, quando existir
-     */
     private List<Comando> analisarPfalsa() throws ErroSintatico, ErroLexico {
         if (verificar(TipoToken.ELSE)) {
             consumir(TipoToken.ELSE);
@@ -301,9 +236,6 @@ import compilador.lexico.TipoToken;
         return null;
     }
 
-    /**
-     * Analisa um comando de repeticao
-     */
     private ComandoWhile analisarComandoWhile() throws ErroSintatico, ErroLexico {
         consumir(TipoToken.WHILE);
         consumir(TipoToken.ABRE_PAREN);
@@ -315,9 +247,6 @@ import compilador.lexico.TipoToken;
         return new ComandoWhile(condicao, bloco);
     }
 
-    /**
-     * Analisa um comando iniciado por variavel
-     */
     private Comando analisarComandoVariavel() throws ErroSintatico, ErroLexico {
         Token tokenVariavel = consumir(TipoToken.VARIAVEL);
         String nome = (String) tokenVariavel.getValor();
@@ -338,9 +267,6 @@ import compilador.lexico.TipoToken;
         return null;
     }
 
-    /**
-     * Analisa um comando de chamada de funcao por identificador
-     */
     private ComandoChamadaFuncao analisarComandoIdent() throws ErroSintatico, ErroLexico {
         Token tokenIdentificador = consumir(TipoToken.IDENT);
         String nomeFuncao = (String) tokenIdentificador.getValor();
@@ -349,9 +275,6 @@ import compilador.lexico.TipoToken;
         return new ComandoChamadaFuncao(nomeFuncao, argumentos);
     }
 
-    /**
-     * Analisa uma lista de argumentos
-     */
     private List<Expressao> analisarListaArg() throws ErroSintatico, ErroLexico {
         consumir(TipoToken.ABRE_PAREN);
         List<Expressao> argumentos = new ArrayList<>();
@@ -364,9 +287,6 @@ import compilador.lexico.TipoToken;
         return argumentos;
     }
 
-    /**
-     * Analisa argumentos separados por virgula
-     */
     private List<Expressao> analisarArgumentos() throws ErroSintatico, ErroLexico {
         List<Expressao> argumentos = new ArrayList<>();
         argumentos.add(analisarExpressao());
@@ -379,17 +299,11 @@ import compilador.lexico.TipoToken;
         return argumentos;
     }
 
-    /**
-     * Analisa uma condicao
-     */
     private Condicao analisarCondicao() throws ErroSintatico, ErroLexico {
         Expressao expressao = analisarDisjuncao();
         return new Condicao(expressao);
     }
 
-    /**
-     * Analisa uma disjuncao logica
-     */
     private Expressao analisarDisjuncao() throws ErroSintatico, ErroLexico {
         Expressao esquerda = analisarConjuncao();
         while (verificar(TipoToken.OR)) {
@@ -400,9 +314,6 @@ import compilador.lexico.TipoToken;
         return esquerda;
     }
 
-    /**
-     * Analisa uma conjuncao logica
-     */
     private Expressao analisarConjuncao() throws ErroSintatico, ErroLexico {
         Expressao esquerda = analisarNegacao();
         while (verificar(TipoToken.AND)) {
@@ -413,9 +324,6 @@ import compilador.lexico.TipoToken;
         return esquerda;
     }
 
-    /**
-     * Analisa uma negacao ou expressao entre parenteses
-     */
     private Expressao analisarNegacao() throws ErroSintatico, ErroLexico {
         if (verificar(TipoToken.NOT)) {
             consumir(TipoToken.NOT);
@@ -441,17 +349,10 @@ import compilador.lexico.TipoToken;
         return analisarRelacao();
     }
 
-    /**
-     * Analisa uma relacao a partir de uma expressao
-     */
     private Expressao analisarRelacao() throws ErroSintatico, ErroLexico {
         Expressao esquerda = analisarExpressao();
         return analisarRelacaoComEsquerda(esquerda);
     }
-
-    /**
-     * Verifica se o token atual e um operador relacional
-     */
     private boolean verificarRelacional() {
         return verificarVarios(
             TipoToken.IGUAL,
@@ -463,9 +364,6 @@ import compilador.lexico.TipoToken;
         );
     }
 
-    /**
-     * Analisa uma relacao usando a expressao da esquerda ja lida
-     */
     private Expressao analisarRelacaoComEsquerda(Expressao esquerda) throws ErroSintatico, ErroLexico {
         if (verificar(TipoToken.IGUAL)) {
             consumir(TipoToken.IGUAL);
@@ -500,9 +398,6 @@ import compilador.lexico.TipoToken;
         return esquerda;
     }
 
-    /**
-     * Analisa uma expressao aritmetica ou leitura
-     */
     private Expressao analisarExpressao() throws ErroSintatico, ErroLexico {
         Debug.entrarRegra("<expressao>");
         Expressao expressao;
@@ -523,9 +418,6 @@ import compilador.lexico.TipoToken;
         return expressao;
     }
 
-    /**
-     * Analisa soma e subtracao encadeadas
-     */
     private Expressao analisarOutrosTermos(Expressao esquerda) throws ErroSintatico, ErroLexico {
         while (verificarVarios(TipoToken.MAIS, TipoToken.MENOS)) {
             String operador;
@@ -544,9 +436,6 @@ import compilador.lexico.TipoToken;
         return esquerda;
     }
 
-    /**
-     * Analisa termo com multiplicacao e divisao
-     */
     private Expressao analisarTermo() throws ErroSintatico, ErroLexico {
         boolean negativo = false;
         if (verificar(TipoToken.MENOS)) {
@@ -563,9 +452,6 @@ import compilador.lexico.TipoToken;
         return analisarMaisFatores(fator);
     }
 
-    /**
-     * Analisa multiplicacao e divisao encadeadas
-     */
     private Expressao analisarMaisFatores(Expressao esquerda) throws ErroSintatico, ErroLexico {
         while (verificarVarios(TipoToken.MULT, TipoToken.DIV)) {
             String operador;
@@ -584,9 +470,6 @@ import compilador.lexico.TipoToken;
         return esquerda;
     }
 
-    /**
-     * Analisa um fator: variavel, numero, chamada de funcao ou parenteses
-     */
     private Expressao analisarFator() throws ErroSintatico, ErroLexico {
         if (verificar(TipoToken.VARIAVEL)) {
             Token token = consumir(TipoToken.VARIAVEL);
